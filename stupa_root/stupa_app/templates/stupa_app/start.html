@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Stupa [start]</title>
+    </head>
+    <body>
+        <h1>Stupa [start]</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label>Disks (3–8)
+                <input name="n" type="number" min="3" max="8" value="3">
+            </label>
+            <label>Delay (ms)
+                <input name="delay" type="number" min="0" value="500">
+            </label>
+            <button>Start</button>
+        </form>
+    </body>
+</html>
