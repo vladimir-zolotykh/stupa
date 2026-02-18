@@ -9,12 +9,12 @@
         <form method="post">
             {% csrf_token %}
             <label>Disks (3–8)
-                <input name="n" type="number" min="3" max="8" value="3">
+                <input name="ndisks" type="number" min="3" max="8" value="3">
             </label>
             <label>Delay (ms)
                 <input name="delay" type="number" min="0" value="500">
             </label>
-            <button>Start</button>
+            <button name="action">Start</button>
         </form>
     </body>
 </html>
