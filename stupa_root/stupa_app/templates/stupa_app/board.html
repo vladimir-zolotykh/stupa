@@ -1,20 +1,55 @@
 <!doctype html>
-<html lang="en">
+<html>
     <head>
-        <meta charset="utf-8">
-        <title>Stupa [board]</title>
+        <title>Tower of Hanoi</title>
+        <style>
+         table {
+             border-collapse: collapse;
+         }
+
+         th, td {
+             width: 120px;
+             height: 30px;
+             text-align: center;
+             vertical-align: middle;
+         }
+
+         th {
+             font-weight: bold;
+         }
+
+         .disk {
+             border: 1px solid #000;
+             width: 80%;
+             margin: 0 auto;
+         }
+        </style>
     </head>
     <body>
-        <h1>Stupa [board]</h1>
-        <form method="post">
-            {% csrf_token %}
-            <label>Disks (3–8)
-                <input name="n" type="number" min="3" max="8" value="3">
-            </label>
-            <label>Delay (ms)
-                <input name="delay" type="number" min="0" value="500">
-            </label>
-            <button>Start</button>
-        </form>
+
+        <h1>Tower of Hanoi</h1>
+
+        <table>
+
+            <tr>
+                <th>Peg A</th>
+                <th>Peg B</th>
+                <th>Peg C</th>
+            </tr>
+
+            {% for row in board %}
+            <tr>
+                {% for cell in row %}
+                <td>
+                    {% if cell %}
+                    <div class="disk">Disk {{ cell }}</div>
+                    {% endif %}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+
+        </table>
+
     </body>
 </html>
