@@ -1,5 +1,5 @@
+from typing import Self
 from collections import UserDict
-import copy
 
 
 class Pegs(UserDict):
@@ -8,22 +8,27 @@ class Pegs(UserDict):
         self.step: int = step
         self.ndisks: int = ndisks
 
-    def __getstate__(self) -> dict:
+    def to_session_dict(self) -> dict:
         return {
             "data": dict(self.data),
             "ndisks": self.ndisks,
             "step": self.step,
         }
 
-    def __setstate__(self, state: dict) -> None:
-        self.data = state["data"]
-        self.ndisks = state["ndisks"]
-        self.step = state["step"]
-
     @classmethod
-    def from_ndisks(cls, ndisks: int):
+    def from_ndisks(cls, ndisks: int = 3) -> Self:
         data = {"A": list(range(ndisks, 0, -1)), "B": [], "C": []}
         return cls(data, ndisks=ndisks, step=0)
+
+    @classmethod
+    def from_session_dict(cls, data: dict) -> Self:
+        if not data:
+            return cls.from_ndisks()
+        return cls(
+            data=data["data"],
+            ndisks=data["ndisks"],
+            step=data["step"],
+        )
 
     def move(self, from_, to):
         src, dst = self.data[from_], self.data[to]
