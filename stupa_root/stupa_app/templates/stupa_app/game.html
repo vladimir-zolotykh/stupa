@@ -37,12 +37,12 @@
                 <th>Peg C</th>
             </tr>
 
-            {% for row in pegs %}
+            {% for row in pegs_data %}
             <tr>
                 {% for cell in row %}
                 <td>
                     {% if cell %}
-                    <div class="disk">Disk {{ cell }}</div>
+                    <div class="disk">{{ cell }}</div>
                     {% endif %}
                 </td>
                 {% endfor %}

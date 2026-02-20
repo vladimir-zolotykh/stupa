@@ -8,6 +8,9 @@ class Pegs(UserDict):
         self.step: int = step
         self.ndisks: int = ndisks
 
+    def __repr__(self):
+        return f"Pegs(data={self.data}, ndisks={self.ndisks}, step={self.step})"
+
     def to_session_dict(self) -> dict:
         return {
             "data": dict(self.data),

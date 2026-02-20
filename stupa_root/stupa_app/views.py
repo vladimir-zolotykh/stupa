@@ -1,5 +1,9 @@
 from django.shortcuts import render, redirect
+import logging
 from . import solve
+
+
+logger = logging.getLogger(__name__)
 
 
 def init_game(request, ndisks, delay):
@@ -21,11 +25,14 @@ def start(request):
 def game(request):
     pegs = request.session.get("pegs")
     pegs = solve.Pegs.from_session_dict(pegs) if pegs else solve.Pegs.from_ndisks()
+    logger.debug("Pegs object: %s", pegs)
+    logger.debug("Pegs data: %s", pegs.data)
     return render(
         request,
         "stupa_app/game.html",
         context={
-            "pegs_data": solve.transpose(pegs.data),
+            "pegs_data": pegs.data,
+            # "pegs_data": solve.transpose(pegs.data),
             "ndisks": pegs.ndisks,
             "step": pegs.step,
         },
