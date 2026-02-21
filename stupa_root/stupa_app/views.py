@@ -31,8 +31,8 @@ def game(request):
         request,
         "stupa_app/game.html",
         context={
-            "pegs_data": pegs.data,
-            # "pegs_data": solve.transpose(pegs.data),
+            # "pegs_data": pegs.data,
+            "pegs_data": solve.transpose(list(pegs.data.values())),
             "ndisks": pegs.ndisks,
             "step": pegs.step,
         },
