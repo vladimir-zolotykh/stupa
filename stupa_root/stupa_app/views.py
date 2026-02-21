@@ -23,6 +23,8 @@ def start(request):
 
 
 def game(request):
+    if request.method == "POST":
+        return redirect("game")
     pegs = request.session.get("pegs")
     pegs = solve.Pegs.from_session_dict(pegs) if pegs else solve.Pegs.from_ndisks()
     logger.debug("Pegs object: %s", pegs)

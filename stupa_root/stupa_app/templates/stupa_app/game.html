@@ -50,6 +50,11 @@
             {% endfor %}
 
         </table>
+        <form method="post">
+            {% csrf_token %}
+            <button name="action">Next</button>
+        </form>
+
 
     </body>
 </html>
