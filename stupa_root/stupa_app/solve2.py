@@ -25,28 +25,27 @@ def solve(
     yield from solve(pegs, ndisks - 1, aux, from_, to)
 
 
-# @pytest.mark.parametrize(
-#     "ndisks, expected_nsteps",
-#     [
-#         (1, 1),
-#         (2, 3),
-#         (3, 7),
-#         (4, 15),
-#         (5, 31),
-#         (6, 63),
-#         (7, 127),
-#         (8, 255),
-#     ],
-# )
-def test_solve(ndisks, pegs):
-    expected = copy.copy(pegs[0])
+@pytest.mark.parametrize(
+    "ndisks, expected",
+    [
+        (1, [0]),
+        (2, [1, 0]),
+        (3, [2, 1, 0]),
+        (4, [3, 2, 1, 0]),
+        (5, [4, 3, 2, 1, 0]),
+        (6, [5, 4, 3, 2, 1, 0]),
+        (7, [6, 5, 4, 3, 2, 1, 0]),
+        (8, [7, 6, 5, 4, 3, 2, 1, 0]),
+    ],
+)
+def test_solve(ndisks, expected):
+    pegs = [list(range(ndisks - 1, -1, -1)), [], []]
     result = solve(pegs, ndisks)
-    print(f"{pegs = }, {expected = }")
-    for r in result:
-        print(r)
+    result = list(result)[-1][2]
+    print(f"{pegs = }, {expected = }, {result = }")
     assert result == expected
 
 
-if __name__ == "__main__":
-    pegs = [list(range(2, -1, -1)), [], []]
-    test_solve(3, pegs)
+# if __name__ == "__main__":
+#     pegs = [list(range(2, -1, -1)), [], []]
+#     test_solve(3, pegs)
