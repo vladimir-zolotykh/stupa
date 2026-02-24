@@ -80,11 +80,9 @@ def solve_gpt(
 
 
 def move_vlz(pegs: PegsT, from_: int, to: int) -> PegsT:
-    # pegs = copy.deepcopy(pegs)
     pegs = [list(p) for p in pegs]
-    src, dst = pegs[from_], pegs[to]
-    disk = src.pop()
-    dst.append(disk)
+    disk = pegs[from_].pop()
+    pegs[to].append(disk)
     return pegs
 
 
@@ -96,8 +94,6 @@ def solve_vlz(
     pegs = yield from solve(pegs, ndisks - 1, from_, to, aux)
     pegs = move(pegs, from_, to)
     yield pegs
-    # move(pegs, from_, to)
-    # yield copy.deepcopy(pegs)
     pegs = yield from solve(pegs, ndisks - 1, aux, from_, to)
     return pegs
 
