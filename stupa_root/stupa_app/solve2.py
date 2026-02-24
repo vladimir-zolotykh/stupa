@@ -9,14 +9,6 @@ PegsT = tuple[list[int], list[int], list[int]]
 # PegsT = list[list]
 
 
-def move(pegs: PegsT, from_: int, to: int) -> PegsT:
-    # pegs = copy.deepcopy(pegs)
-    src, dst = pegs[from_], pegs[to]
-    disk = src.pop()
-    dst.append(disk)
-    return pegs
-
-
 def solve2(
     ndisks: int = 3,
     pegs: PegsT | type(None) = None,
@@ -29,6 +21,13 @@ def solve2(
     yield from solve(pegs, ndisks, from_, aux, to)
 
 
+def move(pegs: PegsT, from_: int, to: int) -> PegsT:
+    src, dst = pegs[from_], pegs[to]
+    disk = src.pop()
+    dst.append(disk)
+    return pegs
+
+
 def solve(
     pegs: PegsT, ndisks: int, from_: int = 0, aux: int = 1, to: int = 2
 ) -> Iterator[PegsT]:
@@ -38,7 +37,6 @@ def solve(
     yield move(pegs, from_, to)
     # move(pegs, from_, to)
     # yield copy.deepcopy(pegs)
-
     yield from solve(pegs, ndisks - 1, aux, from_, to)
 
 
