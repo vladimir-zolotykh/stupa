@@ -46,7 +46,6 @@ def move_gpt(pegs: PegsT, from_: int, to: int) -> PegsT:
 # move = move_gpt
 # move = util_copilot.move
 # move = util_gemini.move
-move = util_grok.move
 # move = util_deepseek.move
 # move = util_openai.move
 
@@ -76,12 +75,11 @@ def solve_gpt(
 # solve = solve_gpt
 # solve = util_copilot.solve
 # solve = util_gemini.solve
-solve = util_grok.solve
 # solve = util_deepseek.solve
 # solve = util_openai.solve
 
-"""
-def move(pegs: PegsT, from_: int, to: int) -> PegsT:
+
+def move_vlz(pegs: PegsT, from_: int, to: int) -> PegsT:
     # pegs = copy.deepcopy(pegs)
     pegs = [list(p) for p in pegs]
     src, dst = pegs[from_], pegs[to]
@@ -90,11 +88,11 @@ def move(pegs: PegsT, from_: int, to: int) -> PegsT:
     return pegs
 
 
-def solve(
+def solve_vlz(
     pegs: PegsT, ndisks: int, from_: int = 0, aux: int = 1, to: int = 2
 ) -> Iterator[PegsT]:
     if ndisks == 0:
-        return
+        return pegs
     pegs = yield from solve(pegs, ndisks - 1, from_, to, aux)
     pegs = move(pegs, from_, to)
     yield pegs
@@ -102,7 +100,12 @@ def solve(
     # yield copy.deepcopy(pegs)
     pegs = yield from solve(pegs, ndisks - 1, aux, from_, to)
     return pegs
-"""
+
+
+move = move_vlz
+solve = solve_vlz
+# move = util_grok.move
+# solve = util_grok.solve
 
 
 @pytest.mark.parametrize(
