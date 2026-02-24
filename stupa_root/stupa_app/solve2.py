@@ -5,6 +5,13 @@ from typing import Iterator
 import copy
 import pytest
 
+# from . import util_copilot
+# from . import util_gemini
+from . import util_grok
+
+# from . import util_deepseek
+# from . import util_openai
+
 PegsT = tuple[list[int], list[int], list[int]]
 # PegsT = list[list]
 
@@ -21,7 +28,62 @@ def solve2(
     yield from solve(pegs, ndisks, from_, aux, to)
 
 
+def move_gpt(pegs: PegsT, from_: int, to: int) -> PegsT:
+    disk = pegs[from_][-1]
+
+    new_pegs = []
+    for i, peg in enumerate(pegs):
+        if i == from_:
+            new_pegs.append(peg[:-1])
+        elif i == to:
+            new_pegs.append(peg + [disk])
+        else:
+            new_pegs.append(peg)
+
+    return new_pegs
+
+
+# move = move_gpt
+# move = util_copilot.move
+# move = util_gemini.move
+move = util_grok.move
+# move = util_deepseek.move
+# move = util_openai.move
+
+
+def solve_gpt(
+    pegs: PegsT, ndisks: int, from_: int = 0, aux: int = 1, to: int = 2
+) -> Iterator[PegsT]:
+    if ndisks == 0:
+        return
+
+    # Phase 1: move n-1 to auxiliary
+    current = pegs
+    for state in solve(current, ndisks - 1, from_, to, aux):
+        yield state
+        current = state
+
+    # Phase 2: move largest disk
+    current = move(current, from_, to)
+    yield current
+
+    # Phase 3: move n-1 from auxiliary to target
+    for state in solve(current, ndisks - 1, aux, from_, to):
+        yield state
+        current = state
+
+
+# solve = solve_gpt
+# solve = util_copilot.solve
+# solve = util_gemini.solve
+solve = util_grok.solve
+# solve = util_deepseek.solve
+# solve = util_openai.solve
+
+"""
 def move(pegs: PegsT, from_: int, to: int) -> PegsT:
+    # pegs = copy.deepcopy(pegs)
+    pegs = [list(p) for p in pegs]
     src, dst = pegs[from_], pegs[to]
     disk = src.pop()
     dst.append(disk)
@@ -33,11 +95,14 @@ def solve(
 ) -> Iterator[PegsT]:
     if ndisks == 0:
         return
-    yield from solve(pegs, ndisks - 1, from_, to, aux)
-    yield move(pegs, from_, to)
+    pegs = yield from solve(pegs, ndisks - 1, from_, to, aux)
+    pegs = move(pegs, from_, to)
+    yield pegs
     # move(pegs, from_, to)
     # yield copy.deepcopy(pegs)
-    yield from solve(pegs, ndisks - 1, aux, from_, to)
+    pegs = yield from solve(pegs, ndisks - 1, aux, from_, to)
+    return pegs
+"""
 
 
 @pytest.mark.parametrize(
