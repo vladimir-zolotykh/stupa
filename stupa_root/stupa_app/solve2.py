@@ -63,6 +63,22 @@ def test_solve(ndisks, expected):
     assert result == expected
 
 
+def test_functional_solve(ndisks=3):
+    res = solve([list(range(ndisks - 1, -1, -1)), [], []], ndisks)
+    final = []
+    for p in res:
+        final.append(p)
+    assert final == [
+        [[2, 1], [], [0]],
+        [[2], [1], [0]],
+        [[2], [1, 0], []],
+        [[], [1, 0], [2]],
+        [[0], [1], [2]],
+        [[0], [], [2, 1]],
+        [[], [], [2, 1, 0]],
+    ]
+
+
 def test_deepcopy_solve(ndisks=3):
     res = solve([list(range(ndisks - 1, -1, -1)), [], []], ndisks)
     final = []
