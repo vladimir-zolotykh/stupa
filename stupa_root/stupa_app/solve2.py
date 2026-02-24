@@ -6,13 +6,27 @@ import copy
 import pytest
 
 PegsT = tuple[list[int], list[int], list[int]]
+# PegsT = list[list]
 
 
 def move(pegs: PegsT, from_: int, to: int) -> PegsT:
+    # pegs = copy.deepcopy(pegs)
     src, dst = pegs[from_], pegs[to]
     disk = src.pop()
     dst.append(disk)
     return pegs
+
+
+def solve2(
+    ndisks: int = 3,
+    pegs: PegsT | type(None) = None,
+    from_: int = 0,
+    aux: int = 1,
+    to: int = 2,
+) -> Iterator[PegsT]:
+    if pegs is None:
+        pegs = [list(range(ndisks - 1, -1, -1)), [], []]
+    yield from solve(pegs, ndisks, from_, aux, to)
 
 
 def solve(
@@ -22,6 +36,9 @@ def solve(
         return
     yield from solve(pegs, ndisks - 1, from_, to, aux)
     yield move(pegs, from_, to)
+    # move(pegs, from_, to)
+    # yield copy.deepcopy(pegs)
+
     yield from solve(pegs, ndisks - 1, aux, from_, to)
 
 
@@ -46,6 +63,17 @@ def test_solve(ndisks, expected):
     assert result == expected
 
 
-# if __name__ == "__main__":
-#     pegs = [list(range(2, -1, -1)), [], []]
-#     test_solve(3, pegs)
+def test_deepcopy_solve(ndisks=3):
+    res = solve([list(range(ndisks - 1, -1, -1)), [], []], ndisks)
+    final = []
+    for p in res:
+        final.append(copy.deepcopy(p))
+    assert final == [
+        [[2, 1], [], [0]],
+        [[2], [1], [0]],
+        [[2], [1, 0], []],
+        [[], [1, 0], [2]],
+        [[0], [1], [2]],
+        [[0], [], [2, 1]],
+        [[], [], [2, 1, 0]],
+    ]
