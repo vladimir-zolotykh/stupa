@@ -44,13 +44,15 @@ def game(request):
     logger.debug("pegs: %s", pegs)
     # logger.debug("pegs_car: %s", pegs_car)
     # if not is_solved(pegs):
+    transposed = solve.transpose(pegs[0])
+    logger.debug("transposed: %s", transposed)
     return render(
         request,
         "stupa_app/game.html",
         context={
             # "pegs_data": pegs.data,
             # "pegs_data": solve.transpose(list(pegs.data.values())),
-            "pegs": solve.transpose(pegs[0]),
+            "pegs": transposed,
             "ndisks": ndisks,
             "solved": is_solved(pegs),
         },

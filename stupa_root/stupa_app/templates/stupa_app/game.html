@@ -41,7 +41,9 @@
             <tr>
                 {% for cell in row %}
                 <td>
-                    {% if cell %}
+                    {% if cell is none %}
+                    <div class="disk">&nbsp;</div>
+                    {% else %}
                     <div class="disk">{{ cell }}</div>
                     {% endif %}
                 </td>
