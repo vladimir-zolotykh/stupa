@@ -37,7 +37,7 @@
                 <th>Peg C</th>
             </tr>
 
-            {% for row in pegs_data %}
+            {% for row in pegs %}
             <tr>
                 {% for cell in row %}
                 <td>
@@ -50,10 +50,19 @@
             {% endfor %}
 
         </table>
+        {% if solved %}
+        <h1>Solved</h1>
         <form method="post">
             {% csrf_token %}
-            <button name="action">Next</button>
+            <button name="action" value="restart">Restart</button>
         </form>
+        {% else %}
+        <form method="post">
+            {% csrf_token %}
+            <button name="action" value="next">Next</button>
+        </form>
+        {% endif %}
+          
 
 
     </body>

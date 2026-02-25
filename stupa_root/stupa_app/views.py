@@ -1,14 +1,20 @@
 from django.shortcuts import render, redirect
 import logging
 from . import solve
+from . import solve2
 
 
 logger = logging.getLogger(__name__)
 
 
 def init_game(request, ndisks, delay):
-    pegs = solve.Pegs.from_ndisks(ndisks)
-    request.session["pegs"] = pegs.to_session_dict()
+    pegs_start = [list(range(ndisks - 1, -1, -1)), [], []]
+    # pegs = pegs_start.extend(list(solve2.solve(pegs_start, ndisks)))
+    pegs = list(solve2.solve(pegs_start, ndisks))
+    request.session["pegs"] = pegs
+    request.session["ndisks"] = ndisks
+    # pegs = solve.Pegs.from_ndisks(ndisks)
+    # request.session["pegs"] = pegs.to_session_dict()
     request.session.modified = True
 
 
@@ -22,21 +28,30 @@ def start(request):
     return render(request, "stupa_app/start.html")
 
 
+def is_solved(pegs):
+    return not pegs[0] and not pegs[1]
+
+
 def game(request):
     if request.method == "POST":
         return redirect("game")
     pegs = request.session.get("pegs")
-    pegs = solve.Pegs.from_session_dict(pegs) if pegs else solve.Pegs.from_ndisks()
-    logger.debug("Pegs object: %s", pegs)
-    logger.debug("Pegs data: %s", pegs.data)
+    pegs_car, *pegs_rest = pegs
+    ndisks = request.session.get("ndisks")
+    # pegs = solve.Pegs.from_session_dict(pegs) if pegs else solve.Pegs.from_ndisks()
+    logger.debug("pegs: %s", pegs)
+    logger.debug("pegs_car: %s", pegs_car)
+    if not is_solved(pegs):
+        request.session["pegs"] = pegs_rest
     return render(
         request,
         "stupa_app/game.html",
         context={
             # "pegs_data": pegs.data,
-            "pegs_data": solve.transpose(list(pegs.data.values())),
-            "ndisks": pegs.ndisks,
-            "step": pegs.step,
+            # "pegs_data": solve.transpose(list(pegs.data.values())),
+            "pegs": solve.transpose(pegs_car),
+            "ndisks": ndisks,
+            "solved": is_solved(pegs),
         },
     )
 
