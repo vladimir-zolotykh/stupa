@@ -9,12 +9,9 @@ logger = logging.getLogger(__name__)
 
 def init_game(request, ndisks, delay):
     pegs_start = [list(range(ndisks - 1, -1, -1)), [], []]
-    # pegs = pegs_start.extend(list(solve2.solve(pegs_start, ndisks)))
     pegs = [pegs_start, *list(solve2.solve(pegs_start, ndisks))]
     request.session["pegs"] = pegs
     request.session["ndisks"] = ndisks
-    # pegs = solve.Pegs.from_ndisks(ndisks)
-    # request.session["pegs"] = pegs.to_session_dict()
     request.session.modified = True
 
 
@@ -29,7 +26,6 @@ def start(request):
 
 
 def is_solved(pegs, ndisks):
-    # pegs: [[[], [], [2, 1, 0]]]
     return pegs == [[], [], list(range(ndisks - 1, -1, -1))]
 
 
@@ -48,7 +44,6 @@ def game(request):
     solved = is_solved(pegs[0], ndisks)
     logger.debug("pegs: %s", pegs)
     transposed = pegs
-    # if not solved:
     transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
     logger.debug("transposed: %s", transposed)
     return render(
