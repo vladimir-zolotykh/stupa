@@ -98,6 +98,13 @@ def solve_vlz(
     return pegs
 
 
+def inflate(pegs, ndisks):
+    for row in pegs:
+        while len(row) < ndisks:
+            row.append(None)
+    return pegs
+
+
 move = move_vlz
 solve = solve_vlz
 # move = util_grok.move
