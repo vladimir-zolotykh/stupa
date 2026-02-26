@@ -44,7 +44,9 @@ def game(request):
     logger.debug("pegs: %s", pegs)
     # logger.debug("pegs_car: %s", pegs_car)
     # if not is_solved(pegs):
-    transposed = solve.transpose(pegs[0])
+    # transposed = solve.inflate(solve.transpose(pegs[0]), ndisks)
+    # transposed = solve.transpose(pegs[0])
+    transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
     logger.debug("transposed: %s", transposed)
     return render(
         request,
