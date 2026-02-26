@@ -56,7 +56,7 @@ def solve(pegs: Pegs) -> int:
 
 def transpose(pegs: list[list]) -> list[list]:
     board = []
-    npegs = len(pegs)  # number of pegs
+    npegs = 3
     ndisks = len(pegs[0])  # number of disks
     for i in range(ndisks - 1, -1, -1):
         row = []
