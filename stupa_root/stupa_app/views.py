@@ -1,3 +1,4 @@
+from django.views import View
 from django.shortcuts import render, redirect
 import logging
 from . import solve
@@ -25,12 +26,8 @@ def start(request):
     return render(request, "stupa_app/start.html")
 
 
-def is_solved(pegs, ndisks):
-    return pegs == [[], [], list(range(ndisks - 1, -1, -1))]
-
-
-def game(request):
-    if request.method == "POST":
+class GameView(View):
+    def post(self, request):
         action = request.POST.get("action")
         if action == "next":
             pegs = request.session.get("pegs")
@@ -39,22 +36,26 @@ def game(request):
             return redirect("game")
         if action == "restart":
             return redirect("start")
-    pegs = request.session.get("pegs")
-    ndisks = request.session.get("ndisks")
-    solved = is_solved(pegs[0], ndisks)
-    logger.debug("pegs: %s", pegs)
-    transposed = pegs
-    transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
-    logger.debug("transposed: %s", transposed)
-    return render(
-        request,
-        "stupa_app/game.html",
-        context={
-            "pegs": transposed,
-            "ndisks": ndisks,
-            "solved": solved,
-        },
-    )
+
+    def get(self, request):
+        pegs = request.session.get("pegs")
+        ndisks = request.session.get("ndisks")
+        solved = self.is_solved(pegs[0], ndisks)
+        logger.debug("pegs: %s", pegs)
+        transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
+        logger.debug("transposed: %s", transposed)
+        return render(
+            request,
+            "stupa_app/game.html",
+            context={
+                "pegs": transposed,
+                "ndisks": ndisks,
+                "solved": solved,
+            },
+        )
+
+    def is_solved(self, pegs, ndisks):
+        return pegs == [[], [], list(range(ndisks - 1, -1, -1))]
 
 
 def board(request):
