@@ -59,13 +59,17 @@
             <button name="action" value="restart">Restart</button>
         </form>
         {% else %}
-        <form method="post">
+        <form id="auto-next-form" method="post">
             {% csrf_token %}
-            <button name="action" value="next">Next</button>
+            <input type="hidden" name="action" value="next">
         </form>
         {% endif %}
-          
 
-
+    <script>
+     const delay = {{ delay|default:1000 }};
+     setTimeout(function () {
+         document.getElementById("auto-next-form").submit();
+     }, delay);
+    </script>
     </body>
 </html>
