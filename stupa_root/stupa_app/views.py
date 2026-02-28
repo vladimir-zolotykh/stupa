@@ -48,6 +48,8 @@ class GameView(View):
         logger.debug("pegs: %s", pegs)
         transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
         logger.debug("transposed: %s", transposed)
+
+        disk_classes = {disk: f"disk disk-{disk}" for disk in range(1, ndisks + 1)}
         return render(
             request,
             self.template_name,
@@ -55,8 +57,28 @@ class GameView(View):
                 "pegs": transposed,
                 "ndisks": ndisks,
                 "solved": solved,
+                "disk_styles": self.get_disk_styles(ndisks),
+                "disk_classes": disk_classes,
             },
         )
+
+    def get_disk_styles(self, ndisks: int) -> dict:
+        disk_styles = {}
+
+        min_width = 30
+        max_width = 100
+        step = (max_width - min_width) / (ndisks - 1)
+        hue_step = 360 / ndisks
+
+        for disk in range(ndisks):
+            width = min_width + disk * step
+            hue = disk * hue_step
+
+            disk_styles[disk] = {
+                "width": round(width, 2),
+                "hue": round(hue, 2),
+            }
+        return disk_styles
 
     def is_solved(self, pegs, ndisks):
         return pegs == [[], [], list(range(ndisks - 1, -1, -1))]

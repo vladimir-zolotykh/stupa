@@ -51,12 +51,13 @@
                 {% for cell in row %}
                 <td>
                     {% if cell is not none %}
+                    {% with style=disk_styles|get_item:cell %}
+                    <pr>{{ cell }}</pr>
                     <div class="disk"
-                         style="
-                                width: {{ cell|mul:10|add:20 }}%;
-                                background-color: hsl({{ cell|add:-1|mul:45 }}, 70%, 50%);
-                                ">
+                         style="width: {{ style.width }}%;
+                                background-color: hsl({{ style.hue }}, 70%, 50%);">
                     </div>
+                    {% endwith %}
                     {% else %}
                     <div></div>
                     {% endif %}
