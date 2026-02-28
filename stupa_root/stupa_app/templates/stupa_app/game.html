@@ -52,7 +52,6 @@
                 <td>
                     {% if cell is not none %}
                     {% with style=disk_styles|get_item:cell %}
-                    <pr>{{ cell }}</pr>
                     <div class="disk"
                          style="width: {{ style.width }}%;
                                 background-color: hsl({{ style.hue }}, 70%, 50%);">
