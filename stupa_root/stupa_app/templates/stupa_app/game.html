@@ -1,3 +1,4 @@
+{% load math_filters %}
 <!doctype html>
 <html>
     <head>
@@ -51,8 +52,10 @@
                 <td>
                     {% if cell is not none %}
                     <div class="disk"
-                         style="width: {{ cell|add:2 }}0%;
-                                background-color: hsl({{ cell|add:2 }}0, 70%, 50%);">
+                         style="
+                                width: {{ cell|mul:10|add:20 }}%;
+                                background-color: hsl({{ cell|add:-1|mul:45 }}, 70%, 50%);
+                                ">
                     </div>
                     {% else %}
                     <div></div>
