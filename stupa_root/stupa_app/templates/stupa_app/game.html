@@ -19,10 +19,15 @@
          }
 
          .disk {
-             border: 1px solid #000;
-             width: 80%;
+             height: 20px;
              margin: 0 auto;
+             border-radius: 4px;
          }
+         .disk-1 { width: 30%; background-color: #4CAF50; }
+         .disk-2 { width: 45%; background-color: #8BC34A; }
+         .disk-3 { width: 60%; background-color: #2196F3; }
+         .disk-4 { width: 75%; background-color: #FF9800; }
+         .disk-5 { width: 90%; background-color: #f44336; }
         </style>
     </head>
     <body>
@@ -41,10 +46,13 @@
             <tr>
                 {% for cell in row %}
                 <td>
-                    {% if cell is none %}
-                    <div class="disk">&nbsp;</div>
+                    {% if cell is not none %}
+                    <div class="disk"
+                         style="width: {{ cell|add:2 }}0%;
+                                background-color: hsl({{ cell|add:2 }}0, 70%, 50%);">
+                    </div>
                     {% else %}
-                    <div class="disk">{{ cell }}</div>
+                    <div></div>
                     {% endif %}
                 </td>
                 {% endfor %}
