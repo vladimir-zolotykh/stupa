@@ -49,7 +49,7 @@ class GameView(View):
         transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
         logger.debug("transposed: %s", transposed)
 
-        disk_classes = {disk: f"disk disk-{disk}" for disk in range(1, ndisks + 1)}
+        disk_classes = {disk: f"disk disk-{disk}" for disk in range(ndisks)}
         return render(
             request,
             self.template_name,
