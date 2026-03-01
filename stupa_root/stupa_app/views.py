@@ -1,3 +1,4 @@
+import time
 from django.views import View
 from django.shortcuts import render, redirect
 import logging
@@ -25,6 +26,7 @@ class StartView(View):
         request.session["pegs"] = pegs
         request.session["ndisks"] = ndisks
         request.session["nmoves"] = 0  # moves made (total)
+        request.session["perf_counter"] = time.perf_counter()
         request.session.modified = True
 
 
@@ -38,6 +40,7 @@ class GameView(View):
             pegs_car, *pegs_rest = pegs
             request.session["pegs"] = pegs_rest
             request.session["nmoves"] += 1
+            request.session["perf_counter"] = time.perf_counter()
             return redirect("game")
         if action == "restart":
             return redirect("start")
@@ -47,6 +50,7 @@ class GameView(View):
         # logger.debug("pegs: %s", pegs)
         ndisks = request.session.get("ndisks")
         nmoves = request.session.get("nmoves")
+        delta: float = time.perf_counter() - request.session["perf_counter"]
         solved = self.is_solved(pegs[0], ndisks)
 
         disk_classes = {disk: f"disk disk-{disk}" for disk in range(ndisks)}
@@ -57,6 +61,7 @@ class GameView(View):
                 "pegs": pegs[0],
                 "ndisks": ndisks,
                 "nmoves": nmoves,
+                "delta": delta,
                 "solved": solved,
                 "disk_styles": self.get_disk_styles(ndisks),
                 "disk_classes": disk_classes,
