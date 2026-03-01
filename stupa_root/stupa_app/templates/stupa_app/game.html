@@ -42,35 +42,6 @@
              border-left: 4px solid #444;
              border-right: 4px solid #444;
          }
-         /* .board {
-            display: flex;
-            align-items: flex-end;
-            }
-
-            .peg {
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-            }
-          */
-         /* .board {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            height: 300px;
-            margin-top: 40px;
-            }
-
-            .peg {
-            display: flex;
-            flex-direction: column-reverse;
-            align-items: center;
-            justify-content: flex-start;
-            width: 120px;
-            height: 100%;
-            border-left: 4px solid #444;
-            border-right: 4px solid #444;
-            } */
          {% for disk, style in disk_styles.items %}
          .disk-{{ disk }} {
              width: {{ style.width }}%;
@@ -85,14 +56,6 @@
         <h1>Tower of Hanoi</h1>
 
         <table>
-
-            <!-- <tr>
-                 <th>Peg A</th>
-                 <th>Peg B</th>
-                 <th>Peg C</th>
-                 </tr>
-            -->
-
             <div class="board">
                 {% for peg in pegs %}
                 <div class="peg">
