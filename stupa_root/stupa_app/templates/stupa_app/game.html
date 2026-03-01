@@ -72,7 +72,7 @@
             </div>
 
         </table>
-        <pr>Moves: {{ nmoves }}/{{ delta }}</pr>
+        <pr>Moves: {{ nmoves }}/{{ delta|floatformat:2 }}</pr>
         {% if solved %}
         <h1>Solved</h1>
         <form method="post">
