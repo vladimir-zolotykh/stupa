@@ -37,9 +37,7 @@ class GameView(View):
             pegs = request.session.get("pegs")
             pegs_car, *pegs_rest = pegs
             request.session["pegs"] = pegs_rest
-            nmoves = request.session["nmoves"]
-            nmoves += 1
-            request.session["nmoves"] = nmoves
+            request.session["nmoves"] += 1
             return redirect("game")
         if action == "restart":
             return redirect("start")
