@@ -21,15 +21,63 @@
 
          .disk {
              height: 20px;
-             margin: 0 auto;
+             margin: 4px 0;
              border-radius: 4px;
          }
+
+         .board {
+             display: flex;
+             justify-content: space-around;
+             align-items: flex-end;
+             height: 300px;
+             margin-top: 40px;
+         }
+
+         .peg {
+             display: flex;
+             flex-direction: column-reverse;
+             align-items: center;
+             width: 120px;
+             height: 100%;
+             border-left: 4px solid #444;
+             border-right: 4px solid #444;
+         }
+         /* .board {
+            display: flex;
+            align-items: flex-end;
+            }
+
+            .peg {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            }
+          */
+         /* .board {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            margin-top: 40px;
+            }
+
+            .peg {
+            display: flex;
+            flex-direction: column-reverse;
+            align-items: center;
+            justify-content: flex-start;
+            width: 120px;
+            height: 100%;
+            border-left: 4px solid #444;
+            border-right: 4px solid #444;
+            } */
          {% for disk, style in disk_styles.items %}
          .disk-{{ disk }} {
              width: {{ style.width }}%;
              background-color: hsl({{ style.hue }}, 70%, 50%);
          }
          {% endfor %}
+
         </style>
     </head>
     <body>
@@ -38,27 +86,27 @@
 
         <table>
 
-            <tr>
-                <th>Peg A</th>
-                <th>Peg B</th>
-                <th>Peg C</th>
-            </tr>
+            <!-- <tr>
+                 <th>Peg A</th>
+                 <th>Peg B</th>
+                 <th>Peg C</th>
+                 </tr>
+            -->
 
-            {% for row in pegs %}
-            <tr>
-                {% for cell in row %}
-                <td>
-                    {% if cell is not none %}
-                    {% with style=disk_styles|get_item:cell %}
-                    <div class="{{ disk_classes|get_item:cell }}"></div>
+            <div class="board">
+                {% for peg in pegs %}
+                <div class="peg">
+                    {% for disk in peg %}
+                    {% with style=disk_styles|get_item:disk %}
+                    <div class="disk"
+                         style="width: {{ style.width }}%;
+                                background-color: hsl({{ style.hue }}, 70%, 50%);">
+                    </div>
                     {% endwith %}
-                    {% else %}
-                    <div></div>
-                    {% endif %}
-                </td>
+                    {% endfor %}
+                </div>
                 {% endfor %}
-            </tr>
-            {% endfor %}
+            </div>
 
         </table>
         {% if solved %}

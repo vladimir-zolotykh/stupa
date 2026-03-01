@@ -46,7 +46,8 @@ class GameView(View):
         ndisks = request.session.get("ndisks")
         solved = self.is_solved(pegs[0], ndisks)
         logger.debug("pegs: %s", pegs)
-        transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
+        # transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
+        transposed = solve2.inflate(pegs[0], ndisks)
         logger.debug("transposed: %s", transposed)
 
         disk_classes = {disk: f"disk disk-{disk}" for disk in range(ndisks)}
