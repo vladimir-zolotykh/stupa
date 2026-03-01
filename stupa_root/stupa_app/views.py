@@ -1,7 +1,6 @@
 from django.views import View
 from django.shortcuts import render, redirect
 import logging
-from . import solve
 from . import solve2
 
 
@@ -43,19 +42,16 @@ class GameView(View):
 
     def get(self, request):
         pegs = request.session.get("pegs")
+        # logger.debug("pegs: %s", pegs)
         ndisks = request.session.get("ndisks")
         solved = self.is_solved(pegs[0], ndisks)
-        logger.debug("pegs: %s", pegs)
-        # transposed = solve.transpose(solve2.inflate(pegs[0], ndisks))
-        transposed = solve2.inflate(pegs[0], ndisks)
-        logger.debug("transposed: %s", transposed)
 
         disk_classes = {disk: f"disk disk-{disk}" for disk in range(ndisks)}
         return render(
             request,
             self.template_name,
             context={
-                "pegs": transposed,
+                "pegs": pegs[0],
                 "ndisks": ndisks,
                 "solved": solved,
                 "disk_styles": self.get_disk_styles(ndisks),
