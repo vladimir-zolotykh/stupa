@@ -75,22 +75,46 @@
         <pr>Moves: {{ nmoves }}/{{ delta|floatformat:2 }}</pr>
         {% if solved %}
         <h1>Solved</h1>
-        <form method="post">
-            {% csrf_token %}
-            <button name="action" value="restart">Restart</button>
-        </form>
-        {% else %}
-        <form id="auto-next-form" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="action" value="next">
-        </form>
         {% endif %}
+        
+        <form id="game-form" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="action" id="action-input" value="next">
 
-    <script>
-     const delay = {{ delay|default:1000 }};
-     setTimeout(function () {
-         document.getElementById("auto-next-form").submit();
-     }, delay);
-    </script>
+            <button type="submit" id="next-btn">Next</button>
+            <button type="button" id="cancel-btn">Cancel</button>
+            <button type="submit" id="restart-btn" name="action" value="restart" style="display:none;">
+                Restart
+            </button>
+        </form>
+
+        <script>
+         const delay = {{ delay|default:1000 }};
+         let intervalId = null;
+         
+         function startLoop() {
+             intervalId = setInterval(function () {
+                 document.getElementById("game-form").submit();
+             }, delay);
+         }
+
+         function stopLoop() {
+             if (intervalId !== null) {
+                 clearInterval(intervalId);
+                 intervalId = null;
+             }
+             
+             document.getElementById("next-btn").style.display = "none";
+             document.getElementById("cancel-btn").style.display = "none";
+             document.getElementById("restart-btn").style.display = "inline-block";
+         }
+
+         document.getElementById("cancel-btn").addEventListener("click", stopLoop);
+         
+         // Start automatically if not solved
+         {% if not solved %}
+         startLoop();
+         {% endif %}
+        </script>
     </body>
 </html>
